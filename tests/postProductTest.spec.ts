@@ -53,7 +53,7 @@ test.describe('post Product Test', () => {
 
     test('life circle create, update, delete', async ({ request }) => {
         
-        // 🔹 1️⃣ **СТВОРЕННЯ ПОСТА**
+        // Створення поста
         const createStartTime = Date.now();
         const createData = {
             title: 'post Product',
@@ -71,7 +71,7 @@ test.describe('post Product Test', () => {
             data: createData
         })
 
-        // ✅ **Перевірка всіх атрибутів створеного поста**
+        //  Перевірка всіх атрибутів створеного поста
 
         const createRealTime = Date.now() - createStartTime;
         expect(createRealTime).toBeLessThan(performanceTimeOut);
@@ -117,7 +117,7 @@ test.describe('post Product Test', () => {
 
         console.log(`was created id, ${createdPost.id}`)
 
-        // 🔹 2️⃣ **ОНОВЛЕННЯ ПОСТА**
+        // Оновненя поста
         const editStartTime = Date.now();
         const editData = {
             title: 'Updated Post Title',
@@ -134,7 +134,7 @@ test.describe('post Product Test', () => {
             data: editData
         })
 
-        // ✅ **Перевірка оновленого поста**
+        // Перевірка оновленого поста
         const editRealTime = Date.now() - editStartTime;
         expect(editRealTime).toBeLessThan(performanceTimeOut);
         expect(editResponse.status()).toBe(200);
@@ -147,7 +147,7 @@ test.describe('post Product Test', () => {
 
         console.log(`was updated id, ${createdPost.id}`)
     
-        // 🔹 3️⃣ **ВИДАЛЕННЯ ПОСТА (force=true)**
+        // Видалення поста
         const deleteStartTime = Date.now();
 
         const deleteResponse = await request.delete(`${baseUrl}/posts/${createdPost.id}?force=true`, {
@@ -159,7 +159,7 @@ test.describe('post Product Test', () => {
         const deleteJson = await deleteResponse.json();
         console.log(`🗑 Deleted ID: ${createdPost.id}`);
 
-        // ✅ **Перевірка видаленого поста**
+        // Перевірка видаленого поста
         const deleteRealTime = Date.now() - deleteStartTime;
         expect(deleteRealTime).toBeLessThan(performanceTimeOut);
         expect(deleteResponse.status()).toBe(200);
@@ -167,7 +167,7 @@ test.describe('post Product Test', () => {
         expect(deleteJson.previous.id).toBe(createdPost.id);
         expect(deleteJson.previous.title.raw).toBe(editData.title);
 
-        // 🔹 4️⃣ **ПЕРЕВІРКА, ЩО ПОСТА НЕМАЄ**
+        // Перевірка, що поста немає
         const checkDeletedResponse = await request.get(`${baseUrl}/posts/${createdPost.id}`, {
             headers: {
                 'Authorization': `Basic ${credential}`
