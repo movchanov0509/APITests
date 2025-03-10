@@ -1,3 +1,4 @@
+
 import { test, expect } from '@playwright/test';
 import { PostApiPage } from '../pages/postApi.page';
 import { PostProduct } from '../pages/postProduct.interface';
@@ -8,7 +9,7 @@ test.describe('Post Product Test', () => {
         const postApiPage = new PostApiPage(request);
 
         // Create post
-        const createData  = {
+        const createData = {
             title: 'post Product',
             content: 'Testing content',
             status: 'publish'
@@ -46,7 +47,7 @@ test.describe('Post Product Test', () => {
         expect(getResponse.status()).toBe(200);
 
         const fetchedPost = await getResponse.json();
-        expect(fetchedPost.title.rendered).toBe(editData.title.rendered);
+        expect(fetchedPost.title.rendered).toBe(editData.title);
         console.log(`Verified post update with ID: ${fetchedPost.id}`);
 
         // Delete Post
@@ -59,7 +60,8 @@ test.describe('Post Product Test', () => {
 
         // Verify Post Deletion
         const { getResponse: checkResponse } = await postApiPage.getPost(createdPost.id);
-        expect(checkResponse.status()).toBe(404);
+        const deletedPost = await checkResponse.json();
+        expect(deletedPost.deleted).toBe(true);
         console.log(`Verified deletion of post ID: ${createdPost.id}`);
     });
 });
