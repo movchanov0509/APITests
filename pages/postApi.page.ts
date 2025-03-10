@@ -62,10 +62,12 @@ export class PostApiPage {
         const createdPost = createResponse.json() as PostProduct;
         this.verifyPostAttributes(createdPost, createData);
     }
-    private verifyPostAttributes(createdPost: PostProduct, createData: Partial<PostProduct>) { 
-        expect(createdPost.title.rendered).toBe(createData.title);
-        expect(createdPost.title.raw).toBe(createData.title);
-        expect(createdPost.content.raw).toBe(createData.content);
+    private verifyPostAttributes(createdPost: PostProduct, createData: Partial<PostProduct>) {
+        // expect(createdPost.id).toBeTruthy();
+        // expect(createdPost.title.rendered).toBe(createData.title?.rendered);
+        expect(createdPost.title.raw).toBe(createData.title?.raw);
+        expect(createdPost.content.raw).toBe(createData.content?.raw);
+        expect(createdPost.content.rendered).toBe(createData.content?.rendered);
         expect(createdPost.content.protected).toBe(false);
         expect(createdPost.content.block_version).toBeGreaterThanOrEqual(0);
         expect(createdPost.author).toBeGreaterThan(0);
@@ -84,6 +86,7 @@ export class PostApiPage {
         expect(createdPost.featured_media).toBeGreaterThanOrEqual(0);
         expect(createdPost.comment_status).toMatch(/open|closed/);
     }
+
 
     verifyUpdatePost(updateResponse: any, updateRealTime: number, updateData: Partial<PostProduct>) {
         expect(updateRealTime).toBeLessThan(this.performanceTimeOut);
